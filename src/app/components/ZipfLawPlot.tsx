@@ -5,6 +5,7 @@ import { useData } from '../utils/DataContext';
 import { memo, useEffect, useState } from 'react';
 import { AxisType, Data, Layout } from 'plotly.js';
 import styled from 'styled-components';
+import { LineDecoration } from './LineDecoration';
 
 export const ZipfLawPlot = () => {
     const [plotlyLoaded, setPlotlyLoaded] = useState(false);
@@ -92,36 +93,40 @@ export const ZipfLawPlot = () => {
 
     const MemoizedPlot = memo(Plot);
 
-    console.log({ranks});
-    console.log({hoverText});
-
     return (
         <Root>
-            <H2>{"Word Frequency vs. Zipf’s Law"}</H2>
-            <ContentWrapper>
-                {plotlyLoaded  && data && <MemoizedPlot
-                    data={data}
-                    layout={layout}
-                    config={{ displayModeBar: true }}
-                    useResizeHandler={true}
-                    style={{ width: '100%', height: '100%' }}
-                    className="demo-plot" />
-                }
-                <Text>
-                    {"This chart compares the actual word usage in song lyrics to what we'd expect based on Zipf's Law, a rule suggesting that a few words are used very often while most are used rarely. On the chart, the 'Actual' line shows how often words really appear in lyrics, from most to least common, and the 'Expected by Zipf's Law' line shows how often they would appear if the lyrics perfectly followed this law. When these lines are close together, it means the words in songs follow a common pattern seen in everyday language, where some words are super common and others are hardly used at all. This simple comparison helps us see how song lyrics reflect natural language patterns."}
-                </Text>
-            </ContentWrapper>
+            <LineDecorationWrapper>
+                <LineDecoration direction={"toBottom"} length={500} color={'#9A5FA4'} />
+            </LineDecorationWrapper>
+            <RootInner>
+                <H2>{"Word Frequency vs. Zipf’s Law"}</H2>
+                <ContentWrapper>
+                    {plotlyLoaded  && data && <MemoizedPlot
+                        data={data}
+                        layout={layout}
+                        config={{ displayModeBar: true }}
+                        useResizeHandler={true}
+                        style={{ width: '100%', height: '100%' }}
+                        className="demo-plot" />
+                    }
+                    <TextWrapper>
+                        <Text>
+                            {"This chart compares the actual word usage in song lyrics to what we'd expect based on Zipf's Law, a rule suggesting that a few words are used very often while most are used rarely. On the chart, the 'Actual' line shows how often words really appear in lyrics, from most to least common, and the 'Expected by Zipf's Law' line shows how often they would appear if the lyrics perfectly followed this law. When these lines are close together, it means the words in songs follow a common pattern seen in everyday language, where some words are super common and others are hardly used at all. This simple comparison helps us see how song lyrics reflect natural language patterns."}
+                        </Text>
+                        <TextLineDecorationWrapper>
+                            <LineDecoration direction={"toLeft"} length={40} color={'#A45F5F'} />
+                        </TextLineDecorationWrapper>
+                    </TextWrapper>
+                </ContentWrapper>
+            </RootInner>
         </Root>
     );
 };
 
 const Root = styled.div`
     padding: var(--block-padding) 0;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    align-items: center;
     position: relative;
+    display: flex;
 
     &:before {
         content: "";
@@ -129,11 +134,24 @@ const Root = styled.div`
         width: calc(100% + var(--main-indentation) * 2);
         height: 100%;
         top: 0;
-        left: -var(--main-indentation);
+        left: calc(var(--main-indentation) * -1);
         background-color: var(--accent-blue);
         z-index: -1;
         opacity: 0.7;
     }
+`;
+
+const LineDecorationWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+`;
+
+const RootInner = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
 `;
 
 const ContentWrapper = styled.div`
@@ -142,6 +160,19 @@ const ContentWrapper = styled.div`
     align-items: center;
     border: 11px solid var(--acent-violet);
     background-color: var(--acent-violet);
+`;
+
+const TextWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 30px;
+    width: 100%;
+`;
+
+const TextLineDecorationWrapper = styled.div`
+    margin-right: 30px;
+    display: flex;
+    justify-content: flex-end;
 `;
 
 const Text = styled.p`
