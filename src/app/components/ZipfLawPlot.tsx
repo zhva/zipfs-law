@@ -1,18 +1,23 @@
 "use client";
 
 import Plot from 'react-plotly.js';
-import { useData } from '../utils/DataContext';
+import { DataItem } from '../utils/DataContext';
 import { memo, useEffect, useState } from 'react';
-import { AxisType, Data, Layout } from 'plotly.js';
+import { AxisType, Color, Data, Layout } from 'plotly.js';
 import styled from 'styled-components';
-import { LineDecoration } from './LineDecoration';
 
-export const ZipfLawPlot = () => {
+export interface ZipfLawPlotProps {
+    wordCounts: DataItem[];
+    circleColor: Color;
+    borderColor: Color;
+}
+
+export const ZipfLawPlot = ({ wordCounts, circleColor, borderColor }: ZipfLawPlotProps) => {
     const [plotlyLoaded, setPlotlyLoaded] = useState(false);
-    const wordCounts = useData();
+    const [maxPlotRankNumber, setMaxPlotRankNumber] = useState<number>(1000);
 
     useEffect(() => {
-        // Dynamically import Plotly.js only in the client-side code
+        // Dynamically import Plotly.js
         import('react-plotly.js').then(() => {
             setPlotlyLoaded(true);
         });
@@ -25,7 +30,7 @@ export const ZipfLawPlot = () => {
     // Sort the word counts by frequency in descending order
     const sortedWordCounts = wordCounts
         .sort((a, b) => b.frequency - a.frequency)
-        .slice(0, 1000); // take only 1000 for better perfomance
+        .slice(0, maxPlotRankNumber);
 
     // Calculate rank
     const ranks = sortedWordCounts.map((_, index) => index + 1);
@@ -38,6 +43,8 @@ export const ZipfLawPlot = () => {
     const hoverText = sortedWordCounts.map((item, index) => {
         return `Rank: ${ranks[index]}<br>Word: ${item.word}<br>Frequency: ${item.frequency}`;
     });
+
+    const markerSizes = sortedWordCounts.map(item => 8 + 30 * (item.frequency / maxFrequency));
 
     const data: Data[] = [
         {
@@ -55,10 +62,10 @@ export const ZipfLawPlot = () => {
             mode: 'markers',
             name: 'Actual word frequencies',
             marker: {
-                color: "rgba(25, 25, 112, 0.3)",
-                size: 12,
+                color: circleColor,
+                size: markerSizes,
                 line: {
-                    color: 'rgb(8, 8, 44)',
+                    color: borderColor,
                     width: 1,
                 },
             },
@@ -93,96 +100,52 @@ export const ZipfLawPlot = () => {
 
     const MemoizedPlot = memo(Plot);
 
+    const handleMaxPlotRankNumberChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setMaxPlotRankNumber(parseInt(event.target.value));
+    };
+
     return (
         <Root>
-            <LineDecorationWrapper>
-                <LineDecoration direction={"toBottom"} length={500} color={'#9A5FA4'} />
-            </LineDecorationWrapper>
-            <RootInner>
-                <H2>{"Word Frequency vs. Zipf’s Law"}</H2>
-                <ContentWrapper>
-                    {plotlyLoaded  && data && <MemoizedPlot
-                        data={data}
-                        layout={layout}
-                        config={{ displayModeBar: true }}
-                        useResizeHandler={true}
-                        style={{ width: '100%', height: '100%' }}
-                        className="demo-plot" />
-                    }
-                    <TextWrapper>
-                        <Text>
-                            {"This chart compares the actual word usage in song lyrics to what we'd expect based on Zipf's Law, a rule suggesting that a few words are used very often while most are used rarely. On the chart, the 'Actual' line shows how often words really appear in lyrics, from most to least common, and the 'Expected by Zipf's Law' line shows how often they would appear if the lyrics perfectly followed this law. When these lines are close together, it means the words in songs follow a common pattern seen in everyday language, where some words are super common and others are hardly used at all. This simple comparison helps us see how song lyrics reflect natural language patterns."}
-                        </Text>
-                        <TextLineDecorationWrapper>
-                            <LineDecoration direction={"toLeft"} length={40} color={'#A45F5F'} />
-                        </TextLineDecorationWrapper>
-                    </TextWrapper>
-                </ContentWrapper>
-            </RootInner>
+            <MaxRankSelect>
+                <select
+                    value={maxPlotRankNumber}
+                    onChange={handleMaxPlotRankNumberChange}
+                >
+                    <option value={100}>10²</option>
+                    <option value={1000}>10³</option>
+                    <option value={10000}>10⁴</option>
+                    <option value={100000}>10⁵</option>
+                </select>
+            </MaxRankSelect>
+            {plotlyLoaded  && data && <MemoizedPlot
+                data={data}
+                layout={layout}
+                config={{ displayModeBar: true }}
+                useResizeHandler={true}
+                style={{ width: '100%', height: '100%' }}
+                className="demo-plot" />
+            }
         </Root>
     );
 };
 
+
 const Root = styled.div`
-    padding: var(--block-padding) 0;
     position: relative;
-    display: flex;
-
-    &:before {
-        content: "";
-        position: absolute;
-        width: calc(100% + var(--main-indentation) * 2);
-        height: 100%;
-        top: 0;
-        left: calc(var(--main-indentation) * -1);
-        background-color: var(--accent-blue);
-        z-index: -1;
-        opacity: 0.7;
-    }
-`;
-
-const LineDecorationWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-`;
-
-const RootInner = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    align-items: center;
-`;
-
-const ContentWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: 11px solid var(--acent-violet);
-    background-color: var(--acent-violet);
-`;
-
-const TextWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    padding-bottom: 30px;
     width: 100%;
+    height: 100%;
 `;
 
-const TextLineDecorationWrapper = styled.div`
-    margin-right: 30px;
-    display: flex;
-    justify-content: flex-end;
-`;
+const MaxRankSelect = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
 
-const Text = styled.p`
-    flex-basis: 40%;
-    padding: 35px;
-
-`;
-
-const H2 = styled.h2`
-    margin-bottom: 15px;
-    font-size: 48px;
-    font-family: 'New Rocker';
+    select {
+        outline: none;
+        padding: 5px;
+        border: 1px solid rgb(120, 120, 120);
+        border-radius: 0;
+    }
 `;
