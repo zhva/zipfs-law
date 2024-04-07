@@ -36,8 +36,10 @@
     --accent-blue: #1B212B;
     --acent-violet: #684A6B;
 
-    --main-indentation: 90px;
-    --block-padding: 75px;
+    --spacing-p90: 90px;
+    --spacing-s30: 30px;
+
+    --spacing-p75: 75px;
 }
 
 * {

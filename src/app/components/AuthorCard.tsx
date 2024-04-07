@@ -28,7 +28,7 @@ const Root = styled.div`
     padding: 35px;
     top: 50vh;
     left: 50%;
-    transform: translate(-50%, calc(-50% - var(--main-indentation)));
+    transform: translate(-50%, calc(-50% - var(--spacing-p90)));
     background-color: var(--background);
     border-radius: var(--border-radius);
     z-index: 5;

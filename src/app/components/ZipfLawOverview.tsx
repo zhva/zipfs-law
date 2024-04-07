@@ -44,8 +44,8 @@ export const ZipfLawOverview = () => {
 
 const Root = styled.div`
     display: flex;
-    gap: var(--main-indentation);
-    padding-bottom: var(--block-padding);
+    gap: var(--spacing-p90);
+    padding-bottom: var(--spacing-p75);
     position: relative;
 `;
 
