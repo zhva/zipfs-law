@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Head from "next/head";
+import {DataProvider} from '@/app/utils/DataContext';
 
 export const metadata: Metadata = {
   title: "Zipf's Law in Songs",
@@ -23,7 +24,9 @@ export default function RootLayout({
         </Head>
       <body>
         <main>
-            {children}
+            <DataProvider>
+                {children}
+            </DataProvider>
         </main>
       </body>
     </html>
