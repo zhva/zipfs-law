@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect, PropsWithChildren } from 'react';
 
-interface DataItem {
+export interface DataItem {
     genre: string;
     word: string;
     frequency: number;
