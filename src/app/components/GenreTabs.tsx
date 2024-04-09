@@ -21,6 +21,7 @@ export const GenreTabs = ({ genres, color, isActive, onClick }: GenreTabs) => {
 const Root = styled.div`
     margin: var(--spacing-s30) var(--spacing-s30) 0 var(--spacing-s30);
     padding: 15px;
+    width: calc(100% - var(--spacing-s30) * 2);
     border-radius: var(--border-radius);
     background-color: var(--card);
     display: flex;
