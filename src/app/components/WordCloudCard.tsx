@@ -19,7 +19,7 @@ const WordCloud = ({data, options}: WordCloudCardProps) => {
         const paletteColor = paletteIndex !== -1 ? options.colors[paletteIndex % options.colors.length].hue : '#000000';
 
         const randomMargin = Math.floor(Math.random() * 20) + 5;
-        const randomLineHeight = Math.random() * (0 - 1) + 1;
+        const randomLineHeight = Math.random() * 0.5 + 0.3;
 
         return (
             <Word
@@ -38,9 +38,11 @@ const WordCloud = ({data, options}: WordCloudCardProps) => {
         <StyledCardWrapper>
             <h2>{"WordCloud of top 10 Words"}</h2>
             <StyledTagCloud
-                minSize={36}
+                minSize={42}
                 maxSize={96}
                 tags={data}
+                shuffle={true}
+                randomSeed={Date.now()}
                 renderer={customRenderer}/>
         </StyledCardWrapper>
     );
@@ -65,9 +67,10 @@ const Word = styled.span<{$size: number, $color: string, $margin: number, $lineH
 
 const StyledTagCloud = styled(TagCloud)`
     display: flex;
-    padding: var(--spacing-s30);
+    padding: 5px;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
+    height: 100%;
+    background-color: white;
 `;
 

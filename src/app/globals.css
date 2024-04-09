@@ -65,10 +65,12 @@ h1 {
     font-family: 'New Rocker';
     font-size: 64px;
     line-height: 1.5;
+    font-weight: 400;
 }
 
 h2 {
     font: 32px;
+    font-weight: 400;
 }
 
 a {
