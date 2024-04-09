@@ -1,12 +1,14 @@
+"use client";
+
 import styled from "styled-components";
 
 interface CardWrapperProps {
     children: React.ReactNode;
-    color: string;
+    color?: string;
     headline?: string;
 }
 
-export const CardWrapper = ({ children, color, headline }: CardWrapperProps) => {
+export const CardWrapper = ({ children, color = undefined, headline }: CardWrapperProps) => {
 
     return (
         <Card $color={color}>
@@ -19,9 +21,10 @@ export const CardWrapper = ({ children, color, headline }: CardWrapperProps) => 
 const Card = styled.div<{ $color: string}>`
     padding: 30px;
     border-radius: var(--border-radius);
-    background-color: ${(props) => props.$color};
+    background-color: ${({ $color }) => $color ? $color : 'var(--card)'};
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 30px;
 `;
 
