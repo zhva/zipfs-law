@@ -2,7 +2,7 @@
 
 import Plot from 'react-plotly.js';
 import { DataItem } from '../utils/DataContext';
-import { memo, useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { AxisType, Color, Data, Layout } from 'plotly.js';
 import styled from 'styled-components';
 
@@ -10,9 +10,10 @@ export interface ZipfLawPlotProps {
     wordCounts: DataItem[];
     circleColor: Color;
     borderColor: Color;
+    setSelectedData: React.Dispatch<React.SetStateAction<DataItem[]>>;
 }
 
-export const ZipfLawPlot = ({ wordCounts, circleColor, borderColor }: ZipfLawPlotProps) => {
+export const ZipfLawPlot = ({ wordCounts, circleColor, borderColor, setSelectedData }: ZipfLawPlotProps) => {
     const [plotlyLoaded, setPlotlyLoaded] = useState(false);
     const [maxPlotRankNumber, setMaxPlotRankNumber] = useState<number>(1000);
 
@@ -23,9 +24,18 @@ export const ZipfLawPlot = ({ wordCounts, circleColor, borderColor }: ZipfLawPlo
         });
     }, []);
 
-    if (!plotlyLoaded) {
-        return <div>Loading...</div>;
-    }
+    const handleDataSelect = (eventData: any) => {
+        console.log({eventData});
+        if (eventData && eventData.points) {
+            // Extract selected data from the event
+            const selectedData = eventData.points.map((point: any) => wordCounts[point.pointNumber]);
+
+            // Call the onDataSelect callback if provided
+            if (setSelectedData) {
+                setSelectedData(selectedData);
+            }
+        }
+    };
 
     // Sort the word counts by frequency in descending order
     const sortedWordCounts = wordCounts
@@ -46,6 +56,19 @@ export const ZipfLawPlot = ({ wordCounts, circleColor, borderColor }: ZipfLawPlo
 
     const markerSizes = sortedWordCounts.map(item => 8 + 30 * (item.frequency / maxFrequency));
 
+    const handleMaxPlotRankNumberChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const newMaxPlotRankNumber = parseInt(event.target.value);
+        setMaxPlotRankNumber(newMaxPlotRankNumber);
+
+        // Update plotGenreData using the new maxPlotRankNumber
+        const newPlotGenreData = wordCounts.slice(0, newMaxPlotRankNumber);
+
+        // Pass the updated data to onDataSelect
+        if (setSelectedData) {
+            setSelectedData(newPlotGenreData);
+        }
+    };
+
     const data: Data[] = [
         {
             type: 'scatter',
@@ -53,7 +76,7 @@ export const ZipfLawPlot = ({ wordCounts, circleColor, borderColor }: ZipfLawPlo
             y: expectedCounts,
             mode: 'lines',
             name: "Expected by Zipf's Law",
-            line: { color: "orange", width: 2 }
+            line: { color: "midnightblue", width: 2 }
         },
         {
             type: 'scatter',
@@ -86,9 +109,19 @@ export const ZipfLawPlot = ({ wordCounts, circleColor, borderColor }: ZipfLawPlo
             type: 'log' as AxisType,
             gridcolor: 'rgb(120, 120, 120)'
         },
+        margin: {
+            l: 70,
+            r: 70,
+            t: 100,
+            b: 70,
+        },
+
+        // change selected words works only once when i change something on code and save it
+        clickmode: "event+select",
+        dragmode: 'lasso',
         autosize: true,
-        paper_bgcolor: 'rgb(255,255,255)',
-        plot_bgcolor: 'rgb(255,255,255)',
+        paper_bgcolor: 'white',
+        plot_bgcolor: 'white',
         font: { color: 'black' },
         legend: {
             x: 1,
@@ -100,9 +133,9 @@ export const ZipfLawPlot = ({ wordCounts, circleColor, borderColor }: ZipfLawPlo
 
     const MemoizedPlot = memo(Plot);
 
-    const handleMaxPlotRankNumberChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setMaxPlotRankNumber(parseInt(event.target.value));
-    };
+    if (!plotlyLoaded) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <Root>
@@ -120,10 +153,11 @@ export const ZipfLawPlot = ({ wordCounts, circleColor, borderColor }: ZipfLawPlo
             {plotlyLoaded  && data && <MemoizedPlot
                 data={data}
                 layout={layout}
-                config={{ displayModeBar: true }}
+                config={{ displayModeBar: true}}
                 useResizeHandler={true}
                 style={{ width: '100%', height: '100%' }}
-                className="demo-plot" />
+                className="zipf-plot"
+                onSelected={handleDataSelect}/>
             }
         </Root>
     );
@@ -147,5 +181,16 @@ const MaxRankSelect = styled.div`
         padding: 5px;
         border: 1px solid rgb(120, 120, 120);
         border-radius: 0;
+    }
+
+    .zipf-plot {
+        .svg-container {
+            width: inherit !important;
+        }
+
+        svg {
+            width: 100%;
+            object-fit: fill;
+        }
     }
 `;
