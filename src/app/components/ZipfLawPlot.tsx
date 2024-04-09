@@ -163,7 +163,6 @@ export const ZipfLawPlot = ({ wordCounts, circleColor, borderColor, setSelectedD
     );
 };
 
-
 const Root = styled.div`
     position: relative;
     width: 100%;

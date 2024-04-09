@@ -10,6 +10,7 @@ import { PieChart } from '../components/PieChart';
 import styled from 'styled-components';
 import {WordCloudCard} from '@/app/components/WordCloudCard';
 import { colorPalette } from '../utils/colorPalete';
+import WordTreeMapCard from '../components/WordTreeMapCard';
 
 const Dashboard = () => {
     const data = useData();
@@ -96,7 +97,9 @@ const Dashboard = () => {
                                 />
                             }
                         </RightSideTopWrapper>
-                        <RightSideBottomWrapper></RightSideBottomWrapper>
+                        <RightSideBottomWrapper>
+                            <WordTreeMapCard data={wordCloudData} genre={selectedGenre} />
+                        </RightSideBottomWrapper>
                     </RightSideWrapper>
                 </ContentWrapper>
             }
@@ -148,6 +151,7 @@ const RightSideWrapper = styled.div`
     flex-basis: 45%;
     display: flex;
     flex-direction: column;
+    gap: var(--spacing-s30);
 `;
 
 const RightSideTopWrapper = styled.div`

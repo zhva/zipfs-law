@@ -26,5 +26,6 @@ const Card = styled.div<{ $color: string}>`
     flex-direction: column;
     align-items: center;
     gap: 30px;
+    width: 100%;
 `;
 

@@ -6,7 +6,6 @@ import { memo } from 'react';
 interface ColorObject {
     hue: string;
 }
-
 interface WordCloudCardProps {
     data: {value: string, count: number}[];
     options: {luminosity: string, hue: string, colors: ColorObject[] };
