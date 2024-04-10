@@ -17,8 +17,14 @@ const WordCloud = ({data, options}: WordCloudCardProps) => {
         const paletteIndex = data.findIndex(item => item.value === tag.value);
         const paletteColor = paletteIndex !== -1 ? options.colors[paletteIndex % options.colors.length].hue : '#000000';
 
-        const randomMargin = Math.floor(Math.random() * 20) + 5;
-        const randomLineHeight = Math.random() * 0.5 + 0.3;
+        const randomMargin = Math.floor(Math.random() * 15) + 5;
+        const randomLineHeight = Math.random() * 0.7 + 0.3;
+
+        const getRandomAlignSelf = () => {
+            const alignOptions = ['flex-start', 'center', 'flex-end', 'baseline', 'stretch'];
+            const randomIndex = Math.floor(Math.random() * alignOptions.length);
+            return alignOptions[randomIndex];
+        };
 
         return (
             <Word
@@ -27,6 +33,7 @@ const WordCloud = ({data, options}: WordCloudCardProps) => {
                 $size={size}
                 $margin={randomMargin}
                 $lineHeight={randomLineHeight}
+                $alignSelf={ getRandomAlignSelf()}
             >
                 {tag.value}
             </Word>
@@ -37,8 +44,8 @@ const WordCloud = ({data, options}: WordCloudCardProps) => {
         <StyledCardWrapper>
             <h2>{"WordCloud of top 10 Words"}</h2>
             <StyledTagCloud
-                minSize={42}
-                maxSize={96}
+                minSize={36}
+                maxSize={106}
                 tags={data}
                 shuffle={true}
                 randomSeed={Date.now()}
@@ -53,13 +60,22 @@ const StyledCardWrapper = styled(CardWrapper)`
     height: -webkit-fill-available;
 `;
 
-const Word = styled.span<{$size: number, $color: string, $margin: number, $lineHeight: number}>`
+interface WordProps {
+    $size: number,
+    $color: string,
+    $margin: number,
+    $lineHeight: number,
+    $alignSelf: string
+}
+
+const Word = styled.span<WordProps>`
     font-size: ${(props) => props.$size}px;
     color: ${(props) => props.$color};
     padding: 3px;
     cursor: pointer;
     margin: ${(props) => props.$margin}px;
     line-height: ${(props) => props.$lineHeight};
+    align-self: ${(props) => props.$alignSelf};
     transition: all 0.2s ease-in-out;
 `;
 
@@ -70,6 +86,7 @@ const StyledTagCloud = styled(TagCloud)`
     flex-wrap: wrap;
     justify-content: center;
     height: 100%;
+    width: 100%;
     background-color: white;
 `;
 
