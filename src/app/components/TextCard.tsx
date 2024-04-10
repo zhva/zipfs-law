@@ -23,7 +23,7 @@ const StyledCardWrapper = styled(CardWrapper)`
 
 const Text = styled.p`
     font-size: 20px;
-    padding: 15px;
+    padding: var(--spacing-s15);
     text-align: center;
     height: 100%;
     display: flex;

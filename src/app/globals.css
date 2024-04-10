@@ -24,6 +24,19 @@
     font-display: swap;
 }
 
+@font-face {
+    font-family: 'Oxanium';
+    src: url('/fonts/oxanium/Oxanium.eot');
+    src: url('/fonts/oxanium/Oxanium.eot?#iefix') format('embedded-opentype'),
+         url('/fonts/oxanium/Oxanium.otf') format('otf'),
+         url('/fonts/oxanium/Oxanium.woff') format('woff'),
+         url('/fonts/oxanium/Oxanium.woff2') format('woff2'),
+         url('/fonts/oxanium/Oxanium.ttf') format('truetype'),
+         url('/fonts/oxanium/Oxanium.svg#Oxanium') format('svg');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+  }
 
 :root {
     --border-radius: 10px;
@@ -38,6 +51,7 @@
 
     --spacing-p90: 90px;
     --spacing-s30: 30px;
+    --spacing-s15: 15px;
 
     --spacing-p75: 75px;
 }

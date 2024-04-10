@@ -62,8 +62,8 @@ const Line = styled.div<LineProps>`
     &:before {
         content: "";
         position: absolute;
-        width: 15px;
-        height: 15px;
+        width: var(--spacing-s15);
+        height: var(--spacing-s15);
         border-radius: 50%;
         background-color: ${(props) => props.$color};
     }

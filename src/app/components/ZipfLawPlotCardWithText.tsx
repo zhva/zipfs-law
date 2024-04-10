@@ -58,7 +58,7 @@ const LineDecorationWrapper = styled.div`
 const RootInner = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: var(--spacing-s15);
     align-items: center;
 `;
 
@@ -90,7 +90,7 @@ const Text = styled.p`
 `;
 
 const H2 = styled.h2`
-    margin-bottom: 15px;
+    margin-bottom: var(--spacing-s15);
     font-size: 48px;
     font-family: 'New Rocker';
 `;

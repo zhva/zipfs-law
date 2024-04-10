@@ -20,7 +20,7 @@ export const GenreTabs = ({ genres, color, isActive, onClick }: GenreTabs) => {
 
 const Root = styled.div`
     margin: var(--spacing-s30) var(--spacing-s30) 0 var(--spacing-s30);
-    padding: 15px;
+    padding: var(--spacing-s15);
     width: calc(100% - var(--spacing-s30) * 2);
     border-radius: var(--border-radius);
     background-color: var(--card);
@@ -35,7 +35,7 @@ interface TabProps {
 }
 
 const Tab = styled.div<TabProps>`
-    padding: 15px 0;
+    padding: var(--spacing-s15) 0;
     border-radius: var(--border-radius);
     color: var(--text-color);
     font-size: 26px;

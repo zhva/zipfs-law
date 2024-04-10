@@ -146,8 +146,8 @@ const HeadlineWrapper = styled.div`
 const HeadlineLinesWrapper = styled.div`
     width: 100%;
     display: flex;
-    gap: 15px;
-    margin-bottom: 15px;
+    gap: var(--spacing-s15);
+    margin-bottom: var(--spacing-s15);
     transform: translateX(60%);
 `;
 

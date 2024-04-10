@@ -97,6 +97,6 @@ const Text = styled.p`
 `;
 
 const H2 = styled.h2`
-    margin-bottom: 15px;
+    margin-bottom: var(--spacing-s15);
 `;
 

@@ -35,14 +35,14 @@ const Root = styled.div`
     filter: drop-shadow(0 0 2em black);
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: var(--spacing-s15);
     align-items: end;
 
 `;
 
 const CardWrapper = styled.div`
     display: flex;
-    gap: 15px;
+    gap: var(--spacing-s15);
 `;
 
 const TextWrapper = styled.div`
