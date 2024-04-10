@@ -10,7 +10,7 @@ export interface ZipfLawPlotProps {
     wordCounts: DataItem[];
     circleColor: Color;
     borderColor: Color;
-    setSelectedData: React.Dispatch<React.SetStateAction<DataItem[]>>;
+    setSelectedData?: React.Dispatch<React.SetStateAction<DataItem[]>>;
 }
 
 export const ZipfLawPlot = ({
