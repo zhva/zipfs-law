@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Head from "next/head";
 import {DataProvider} from '@/app/utils/DataContext';
+import { Header } from "./layout/Header";
 
 export const metadata: Metadata = {
   title: "Zipf's Law in Songs",
@@ -23,6 +24,7 @@ export default function RootLayout({
             <link rel="icon" href="/favicon.ico" />
         </Head>
       <body>
+        <Header />
         <main>
             <DataProvider>
                 {children}
