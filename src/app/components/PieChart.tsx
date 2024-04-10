@@ -1,8 +1,11 @@
+"use client";
+
 import Plot from 'react-plotly.js';
-import {useEffect, useState, memo} from 'react';
+import React, { useEffect, useState } from 'react';
 import { CardWrapper } from './CardWrapper';
 import { DataItem } from '../utils/DataContext';
 import styled from 'styled-components';
+import { Layout, Data } from 'plotly.js';
 
 interface PieChartProps {
     wordCounts: DataItem[];
@@ -59,54 +62,57 @@ export const PieChart = ({ wordCounts, color, genre }: PieChartProps) => {
         setCorrelation(correlation * 100);
     }, [wordCounts]);
 
+    const data: Data[] = React.useMemo(
+        () => [
+            {
+                values: [100 - correlation, correlation],
+                labels: ['Remaining', 'Correlation'],
+                type: 'pie',
+                marker: { colors: ['lightgray', color] },
+                hole: 0.6,
+                textinfo: "none",
+                hoverinfo: "label+percent",
+                textposition: "inside",
+                automargin: true,
+            },
+        ], [color, correlation]);
+
+    const layout: Partial<Layout> = React.useMemo(
+        () => ({
+            title: {
+                text: `${correlation.toFixed(1)}%<br><b>${genre.toUpperCase()}</b>`,
+                y: 0.5,
+                x: 0.5,
+                xanchor: 'center',
+                yanchor: 'middle',
+                font: { color: 'white' },
+            },
+            width: 250,
+            height: 250,
+            margin: {
+                l: 0,
+                r: 0,
+                t: 0,
+                b: 0,
+            },
+            showlegend: false,
+            paper_bgcolor: 'transparent',
+            plot_bgcolor: 'transparent',
+            font: { color: 'white' },
+        }),
+    [correlation, genre]);
+
     if (!plotlyLoaded) {
         return <div>Loading...</div>;
     }
-
-    const MemoizedPlot = memo(Plot);
-
-    console.log({correlation});
 
     return (
         <Root>
             <CardWrapper>
                 <div>
-                    {wordCounts && <MemoizedPlot
-                        data={[
-                            {
-                                values: [100 - correlation, correlation],
-                                labels: ['Remaining', 'Correlation'],
-                                type: 'pie',
-                                marker: { colors: ['lightgray', color] },
-                                hole: 0.6,
-                                textinfo: "none",
-                                hoverinfo: "label+percent",
-                                textposition: "inside",
-                                automargin: true,
-                            },
-                        ]}
-                        layout={{
-                            title: {
-                                text: `${correlation.toFixed(1)}%<br><b>${genre.toUpperCase()}</b>`,
-                                y: 0.5,
-                                x: 0.5,
-                                xanchor: 'center',
-                                yanchor: 'middle',
-                                font: { color: 'white' },
-                            },
-                            width: 250,
-                            height: 250,
-                            margin: {
-                                l: 0,
-                                r: 0,
-                                t: 0,
-                                b: 0,
-                            },
-                            showlegend: false,
-                            paper_bgcolor: 'transparent',
-                            plot_bgcolor: 'transparent',
-                            font: { color: 'white' },
-                        }}
+                    {wordCounts && <Plot
+                        data={data}
+                        layout={layout}
                         className="pie-chart"
                     />
                     }

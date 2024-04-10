@@ -10,17 +10,14 @@ interface WordTreeMapCardProps {
 }
 
 const WordTreeMapCard = ({data, genre}: WordTreeMapCardProps) => {
-    // Map the data to the format expected by the TreeMap
-    //const formatter = Intl.NumberFormat('en', { notation: 'compact' });
-
-    const treeMapData = data.map((wordObj) => ({
-        label: `${wordObj.value}`,
-        value: wordObj.count,
-    }));
+    const treeMapData = React.useMemo(() => {
+        return data.map((wordObj) => ({
+            label: `${wordObj.value}`,
+            value: wordObj.count,
+        }));
+    }, [data]);
 
     const palette = colorPalette[genre]?.palette || [];
-
-    //const formattedLabel = formatter.format(wordObj.count);
 
     return (
         <StyledCardWrapper>
