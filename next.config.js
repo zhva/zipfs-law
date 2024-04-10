@@ -9,7 +9,13 @@ const nextConfig = {
         domains: [ "localhost"],
         formats: ["image/avif", "image/webp"],
     },
-    // Other Next.js configuration options...
+    exportPathMap: async function (defaultPathMap, { dev, dir, outDir, distDir, buildId }) {
+        return {
+          '/': { page: '/' },
+          '/dashboard': { page: '/dashboard' },
+        }
+    }
+
 };
 
 module.exports = nextConfig;
