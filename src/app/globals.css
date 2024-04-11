@@ -68,6 +68,11 @@ body {
     overflow-x: hidden;
     font-family: var(--font);
     line-height: 1.5;
+
+    /*hide advertising from ej2-react-treemap*/
+    > svg:first-of-type + div {
+        display: none;
+    }
 }
 
 body {
