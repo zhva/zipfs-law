@@ -91,7 +91,7 @@ const Dashboard = () => {
                         </LeftSideLinesWrapper>
                         <LeftSideBottomWrapper>
                             <CardWrapper>
-                                <h2>{"Word frequency using Zipf's law"}</h2>
+                                <h2>{"Word Frequency vs. Zipf’s Law"}</h2>
                                 <ZipfLawPlot
                                     wordCounts={plotGenreData}
                                     circleColor={colorPalette[selectedGenre].circle}
