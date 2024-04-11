@@ -185,7 +185,7 @@ const Root = styled.div`
             width: inherit !important;
         }
 
-        svg {
+        > svg:first-of-type {
             width: 100%;
             object-fit: fill;
         }
