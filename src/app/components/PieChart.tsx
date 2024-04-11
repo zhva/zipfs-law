@@ -1,12 +1,11 @@
 "use client";
 
-//import Plot from 'react-plotly.js';
+import Plot from 'react-plotly.js';
 import React, { useEffect, useState } from 'react';
 import { CardWrapper } from './CardWrapper';
 import { DataItem } from '../utils/DataContext';
 import styled from 'styled-components';
 import { Layout, Data } from 'plotly.js';
-import dynamic from "next/dynamic";
 
 interface PieChartProps {
     wordCounts: DataItem[];
@@ -38,8 +37,15 @@ function calculateCorrelation(x: number[], y: number[]): number {
 }
 
 export const PieChart = ({ wordCounts, color, genre }: PieChartProps) => {
-    const Plot = dynamic(() => import("react-plotly.js"), { ssr: false, });
+    const [plotlyLoaded, setPlotlyLoaded] = useState(false);
     const [correlation, setCorrelation] = useState<number>(0);
+
+    useEffect(() => {
+        // Dynamically import Plotly.js
+        import('react-plotly.js').then(() => {
+            setPlotlyLoaded(true);
+        });
+    }, []);
 
     useEffect(() => {
         if (!wordCounts || wordCounts.length === 0) {
@@ -96,7 +102,7 @@ export const PieChart = ({ wordCounts, color, genre }: PieChartProps) => {
         }),
     [correlation, genre]);
 
-    if (!Plot) {
+    if (!plotlyLoaded) {
         return <div>Loading...</div>;
     }
 
