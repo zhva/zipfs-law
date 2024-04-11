@@ -121,6 +121,11 @@ const Root = styled.div`
     width: 100%;
     height: 315px;
 
+    > div {
+        width: inherit;
+        height: inherit;
+    }
+
     .pie-chart {
         .svg-container {
             width: inherit !important;
@@ -133,4 +138,3 @@ const Root = styled.div`
         }
     }
 `;
-
