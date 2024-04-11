@@ -34,7 +34,7 @@ const WordTreeMapCard = ({data, genre}: WordTreeMapCardProps) => {
                     labelTemplate: '<span style="font-size: 26px;">${label}</span>',
                 }}
                 palette={palette}
-                style={{ width: '100%', height: '100%' }}
+                style={{ width: '100%', height: '380px' }}
             />
         </StyledCardWrapper>
     );
@@ -44,5 +44,10 @@ export default WordTreeMapCard;
 
 const StyledCardWrapper = styled(CardWrapper)`
     width: 100%;
-    height: -webkit-fill-available;
+    height: 380px;
+
+    svg {
+            width: 100%;
+            object-fit: fill;
+        }
 `;

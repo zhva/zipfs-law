@@ -70,7 +70,8 @@ body {
     line-height: 1.5;
 
     /*hide advertising from ej2-react-treemap*/
-    > svg:first-of-type + div {
+    > svg:first-of-type + div,
+    > script + div {
         display: none;
     }
 }

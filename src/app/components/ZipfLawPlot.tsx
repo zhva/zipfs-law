@@ -1,10 +1,11 @@
 "use client";
 
-import Plot from "react-plotly.js";
+//import Plot from "react-plotly.js";
 import { DataItem } from "../utils/DataContext";
 import React, { useState } from "react";
 import { AxisType, Color, Data, Layout } from "plotly.js";
 import styled from "styled-components";
+import dynamic from "next/dynamic";
 
 export interface ZipfLawPlotProps {
     wordCounts: DataItem[];
@@ -19,6 +20,7 @@ export const ZipfLawPlot = ({
     borderColor,
     setSelectedData,
 }: ZipfLawPlotProps) => {
+    const Plot = dynamic(() => import("react-plotly.js"), { ssr: false, });
     const [maxPlotRankNumber, setMaxPlotRankNumber] = useState<number>(1000);
 
     const handleDataSelect = React.useCallback(
@@ -177,6 +179,17 @@ const Root = styled.div`
     position: relative;
     width: 100%;
     height: 100%;
+
+    .zipf-plot {
+        .svg-container {
+            width: inherit !important;
+        }
+
+        svg {
+            width: 100%;
+            object-fit: fill;
+        }
+    }
 `;
 
 const MaxRankSelect = styled.div`
@@ -192,14 +205,4 @@ const MaxRankSelect = styled.div`
         border-radius: 0;
     }
 
-    .zipf-plot {
-        .svg-container {
-            width: inherit !important;
-        }
-
-        svg {
-            width: 100%;
-            object-fit: fill;
-        }
-    }
 `;
